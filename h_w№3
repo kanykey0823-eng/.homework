@@ -1,0 +1,76 @@
+from datetime import datetime
+from tkinter.font import names
+
+
+class Person:
+    def __init__(self, name, birth_date, occupation, higher_education):
+        self.name = name
+        self.__birth_date = birth_date               # приватный
+        self.__occupation = occupation               # приватный
+        self.__higher_education = higher_education   # приватный
+
+    # --- occupation ---
+    @property
+    def occupation(self):
+        return self.__occupation
+
+    # --- higher_education ---
+    @property
+    def higher_education(self):
+        return self.__higher_education
+
+    # --- birth_date + age ---
+    @property
+    def age(self):
+        """Вычисляет возраст на основе birth_date."""
+        # birth_date хранится строкой "дд.мм.гггг"
+        birth = datetime.strptime(self.__birth_date, "%d.%m.%Y")
+        today = datetime.now()
+        years = today.year - birth.year
+        if (today.month, today.day) < (birth.month, birth.day):
+            years -= 1
+        return years
+
+    def introduce(self):
+        edu = "У меня есть высшее образование." if self.higher_education else "У меня нет высшего образования."
+        print(f"Привет, меня зовут {self.name}. Моя профессия {self.occupation}. {edu}")
+
+
+class Classmate(Person):
+    def __init__(self, name, birth_date, occupation, higher_education, group):
+        super().__init__(name, birth_date, occupation, higher_education)
+        self.group = group
+
+    def introduce(self):
+        edu = "У меня есть высшее образование." if self.higher_education else "У меня нет высшего образования."
+        print(
+            f"Привет, меня зовут {self.name}. "
+            f"Моя профессия {self.occupation}. "
+            f"Я учился с Айсулуу в группе {self.group}. "
+            f"{edu}"
+        )
+
+
+class Friend(Person):
+    def __init__(self, name, birth_date, occupation, higher_education, hobby):
+        super().__init__(name, birth_date, occupation, higher_education)
+        self.hobby = hobby
+
+    def introduce(self):
+        edu = "У меня есть высшее образование." if self.higher_education else "У меня нет высшего образования."
+        print(
+            f"Привет, меня зовут {self.name}. "
+            f"Моя профессия {self.occupation}. "
+            f"Мое хобби {self.hobby}. "
+            f"{edu}"
+        )
+
+
+# --- Примеры ---
+if __name__ == "__main__":
+    cl1 = Classmate("Иван", "20.02.2000", "студент", True, "11D")
+    cl1.introduce()
+
+    fr1 = Friend("Айбек", "20.02.2000", "студент", True, "футбол")
+    fr1.introduce()
+    print(fr1.age)
