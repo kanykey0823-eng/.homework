@@ -1,0 +1,44 @@
+class BaseView:
+    def render(self):
+        print("Template render")
+
+
+class LoggingMixin:
+    def render(self):
+        print("Log: start")
+        super().render()
+        print("Log: end")
+
+
+class AuthRequiredMixin:
+    def __init__(self, authed=True, **kwargs):
+        self.authed = authed
+        super().__init__(**kwargs)  # корректно передаём дальше
+
+    def render(self):
+        if self.authed:
+            print("Auth OK")
+            super().render()
+        else:
+            print("Access denied")
+            super().render()
+
+
+class AdminPageView(LoggingMixin, AuthRequiredMixin, BaseView):
+    def __init__(self, authed=True):
+        super().__init__(authed=authed)
+
+    def render(self):
+        print("Admin page render start")
+        super().render()
+        print("Admin page render end")
+
+
+#=== Пример использования ===
+print("\n=== Авторизованный пользователь ===")
+admin_page = AdminPageView(authed=True)
+admin_page.render()
+
+print("\n=== Неавторизованный пользователь ===")
+admin_page2 = AdminPageView(authed=False)
+admin_page2.render()
