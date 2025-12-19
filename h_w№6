@@ -1,0 +1,27 @@
+from blessed import Terminal
+from homeworks.homework_1 import Person
+
+term = Terminal()
+
+# создаём экземпляры класса Person
+person1 = Person("Alice", 20)
+person2 = Person("Bob", 25)
+
+print(person1)
+print(person2)
+print()
+
+# словарь: фрукт -> цвет
+fruits = {
+    "🍎 Apple": term.red,
+    "🍌 Banana": term.yellow,
+    "🍊 Orange": term.darkorange,
+    "🍇 Grapes": term.magenta,
+    "🍓 Strawberry": term.pink,
+    "🍍 Pineapple": term.green,
+    "🍉 Watermelon": term.cyan,
+}
+
+# печать фруктов разными цветами
+for fruit, color in fruits.items():
+    print(color + fruit + term.normal)
